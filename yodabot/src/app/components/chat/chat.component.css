@@ -1,0 +1,54 @@
+* {
+    font-family: Arial;
+}
+
+#chat {
+    padding: 30px;
+}
+
+#conversation {
+    padding: 25px;
+}
+
+.message {
+    display: flex;
+    justify-content: start;
+    align-items: center; 
+}
+
+.dot {
+    height: 5px;
+    width: 5px;
+    margin-right: 10px;
+    background-color: black;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.sender{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+#writing {
+    color: gray;
+    font-style: italic;
+}
+
+#input_user {
+    width: 70%;
+    margin-right: 20px;
+}
+
+@media screen and (min-width: 768px) {
+    #chat {
+        padding: 75px;
+    }
+
+    #input_user {
+        width: 80%;
+    }
+}
