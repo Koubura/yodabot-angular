@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  baseApiUrl: "http://localhost:8000/api/v1",
+  baseServerUrl: "http://localhost:8000",
+  laravelEchoAuthUrl: "http://localhost:8000/broadcasting/auth",
+  pusherKey: "51795d8f4a152dce7142"
 };
 
 /*

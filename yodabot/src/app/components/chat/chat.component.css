@@ -13,7 +13,8 @@
 .message {
     display: flex;
     justify-content: start;
-    align-items: center; 
+    align-items: self-end;
+    margin-bottom: 10px;
 }
 
 .dot {

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Message } from 'src/app/models/message.model';
+import { YodaService } from 'src/app/services/yoda-service.service';
 
 @Component({
   selector: 'app-chat',
@@ -12,16 +13,24 @@ export class ChatComponent implements OnInit {
   writing:boolean = false;
   conversation: Message[] = [];
 
-  constructor() { }
+  constructor(private yodaService:YodaService) { }
 
   ngOnInit() {
+    this.newChat();
+  }
+
+  newChat() {
+    this.yodaService.newChat()
   }
 
   send() {
     this.conversation.push(new Message("Me",this.message))
     console.log(this.conversation);
     this.writing = true;
-    // llamada al backend
+    this.yodaService.chat(this.message).subscribe( response => {
+      this.conversation.push(new Message("YodaBot",response));
+      this.writing = false;
+    });
     this.message = "";
   }
 
