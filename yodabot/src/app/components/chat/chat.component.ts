@@ -11,7 +11,8 @@ export class ChatComponent implements OnInit {
 
   message:string = "";
   writing:boolean = false;
-  conversation: Message[] = [];
+  conversation:Message[] = [];
+  noResultsCounter:number = 0;
 
   constructor(private yodaService:YodaService) { }
 
@@ -20,7 +21,14 @@ export class ChatComponent implements OnInit {
   }
 
   newChat() {
-    this.yodaService.newChat()
+    this.yodaService.getHistoryAsObservable().subscribe( h => {
+      h.forEach(element => {
+        if(element.user == "user") {
+          this.conversation.push(new Message("Me",element.message));
+        } else this.conversation.push(new Message("YodaBot",element.message));
+      });
+    });
+    this.yodaService.newChat();
   }
 
   send() {
@@ -28,10 +36,30 @@ export class ChatComponent implements OnInit {
     console.log(this.conversation);
     this.writing = true;
     this.yodaService.chat(this.message).subscribe( response => {
-      this.conversation.push(new Message("YodaBot",response));
+      if(this.checkNotResults(response.flags)) this.starWarsCharacters();
+      this.conversation.push(new Message("YodaBot",response.message));
       this.writing = false;
     });
     this.message = "";
+  }
+
+  checkNotResults(flags) {
+    var noResults = false;
+    flags.foreach(element => {
+      if(element == "no-results") {
+        this.noResultsCounter++;
+        noResults = true;
+      }
+    });
+    if(!noResults) this.noResultsCounter = 0;
+
+    return this.noResultsCounter >= 2;
+  }
+
+  starWarsCharacters() {
+    this.yodaService.starWarsCharacters().subscribe( response => {
+      console.log(response);
+    });
   }
 
 }

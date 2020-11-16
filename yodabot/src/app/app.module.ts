@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule} from "@angular/common/http";
+import {CookieService} from 'angular2-cookie/core';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import { HttpClientModule} from "@angular/common/http";
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
