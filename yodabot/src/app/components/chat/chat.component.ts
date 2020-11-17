@@ -35,19 +35,26 @@ export class ChatComponent implements OnInit {
     this.conversation.push(new Message("Me",this.message))
     console.log(this.conversation);
     this.writing = true;
-    this.yodaService.chat(this.message).subscribe( response => {
-      if(this.checkNotResults(response.flags)) this.starWarsCharacters();
-      this.conversation.push(new Message("YodaBot",response.message));
-      this.writing = false;
-    });
+    if(this.message.includes("force")) {
+      this.starWarsFilms();
+    } else {
+      this.yodaService.chat(this.message).subscribe( response => {
+        if(this.checkNotResults(response.flags)) this.starWarsCharacters();
+        else {
+          this.conversation.push(new Message("YodaBot",response.message));
+          this.writing = false;
+        }
+      });
+    }
     this.message = "";
   }
 
-  checkNotResults(flags) {
+  checkNotResults(flags:string[]) {
     var noResults = false;
-    flags.foreach(element => {
+    flags.forEach(element => {
       if(element == "no-results") {
         this.noResultsCounter++;
+        console.log(this.noResultsCounter);
         noResults = true;
       }
     });
@@ -58,7 +65,25 @@ export class ChatComponent implements OnInit {
 
   starWarsCharacters() {
     this.yodaService.starWarsCharacters().subscribe( response => {
-      console.log(response);
+      var people = "";
+      response.results.forEach( p => {
+        people = people + p.name + ", ";
+      });
+      people = people + "..."
+      this.conversation.push(new Message("YodaBot",people));
+      this.writing = false;
+    });
+  }
+
+  starWarsFilms() {
+    this.yodaService.starWarsFilms().subscribe( response => {
+      var films = "";
+      response.results.forEach( p => {
+        films = films + p.title + ", ";
+      });
+      films = films + "..."
+      this.conversation.push(new Message("YodaBot",films));
+      this.writing = false;
     });
   }
 

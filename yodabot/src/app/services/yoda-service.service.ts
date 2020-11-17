@@ -51,7 +51,11 @@ export class YodaService {
     }
 
     starWarsCharacters() {
-        return this.http.post<any>(`${this.host}/conversation/variables`, { sessionToken: this.sessionToken });
+        return this.http.get<any>(`${this.host}/conversation/people`);
+    }
+
+    starWarsFilms() {
+        return this.http.get<any>(`${this.host}/conversation/films`);
     }
   
 }
