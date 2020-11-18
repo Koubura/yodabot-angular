@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { CookieService } from 'angular2-cookie';
 import { Subject } from 'rxjs';
+import * as Cookies from 'js-cookie';
 
 @Injectable({
     providedIn: 'root'
@@ -13,8 +13,7 @@ export class YodaService {
     private sessionToken:string = "";
     subjectHistory = new Subject<any>();
   
-    constructor(private http:HttpClient,
-                private cookieService: CookieService) { }
+    constructor(private http:HttpClient) { }
   
     public getHost() {
       return this.host;
@@ -25,7 +24,7 @@ export class YodaService {
     }
 
     newChat() {
-        if(this.cookieService.get('sessionToken')!=null) {
+        if(Cookies.get('sessionToken')!=null) {
             this.getHistory();
         } else {
             this.openNewChat();
@@ -33,7 +32,7 @@ export class YodaService {
     }
 
     getHistory() {
-        this.sessionToken = this.cookieService.get('sessionToken');
+        this.sessionToken = Cookies.get('sessionToken');
         this.http.post<any>(`${this.host}/conversation/history`, {sessionToken: this.sessionToken} ).subscribe( response => {
             this.subjectHistory.next(response);
         });
@@ -42,7 +41,7 @@ export class YodaService {
     openNewChat() {
         this.http.get<any>(`${this.host}/conversation`).subscribe( response => {
             this.sessionToken = response['sessionToken'];
-            this.cookieService.put('sessionToken',response['sessionToken'])
+            Cookies.set('sessionToken',response['sessionToken'], { expires: 1 })
         });
     }
 
