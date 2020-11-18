@@ -33,7 +33,6 @@ export class ChatComponent implements OnInit {
 
   send() {
     this.conversation.push(new Message("Me",this.message))
-    console.log(this.conversation);
     this.writing = true;
     if(this.message.includes("force")) {
       this.starWarsFilms();
@@ -54,7 +53,6 @@ export class ChatComponent implements OnInit {
     flags.forEach(element => {
       if(element == "no-results") {
         this.noResultsCounter++;
-        console.log(this.noResultsCounter);
         noResults = true;
       }
     });

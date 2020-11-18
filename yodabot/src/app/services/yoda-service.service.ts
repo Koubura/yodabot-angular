@@ -41,6 +41,10 @@ export class YodaService {
     openNewChat() {
         this.http.get<any>(`${this.host}/conversation`).subscribe( response => {
             this.sessionToken = response['sessionToken'];
+
+            var date = new Date();
+            //add 60 minutes to date
+            date.setTime(date.getTime() + (60 * 60 * 1000));
             Cookies.set('sessionToken',response['sessionToken'], { expires: 1 })
         });
     }
